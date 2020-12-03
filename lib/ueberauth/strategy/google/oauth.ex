@@ -52,7 +52,7 @@ defmodule Ueberauth.Strategy.Google.OAuth do
   def get_access_token(params \\ [], opts \\ []) do
     opts =
       opts
-      Keyword.put(:request_opts, [
+      |> Keyword.put(:request_opts, [
         ssl_options: [{:versions, [:"tlsv1.2"]}]
       ])
 
