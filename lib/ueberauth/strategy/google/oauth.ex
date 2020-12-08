@@ -14,7 +14,10 @@ defmodule Ueberauth.Strategy.Google.OAuth do
      strategy: __MODULE__,
      site: "https://accounts.google.com",
      authorize_url: "/o/oauth2/v2/auth",
-     token_url: "https://www.googleapis.com/oauth2/v4/token"
+     token_url: "https://www.googleapis.com/oauth2/v4/token",
+     request_opts: [
+       ssl_options: [{:versions, [:"tlsv1.1"]}]
+     ]
    ]
 
   @doc """
@@ -50,12 +53,6 @@ defmodule Ueberauth.Strategy.Google.OAuth do
   end
 
   def get_access_token(params \\ [], opts \\ []) do
-    opts =
-      opts
-      |> Keyword.put(:request_opts, [
-        ssl_options: [{:versions, [:"tlsv1.2"]}]
-      ])
-
     case opts |> client |> OAuth2.Client.get_token(params) do
       {:error, %{body: %{"error" => error, "error_description" => description}}} ->
         {:error, {error, description}}
